@@ -6,7 +6,7 @@ include_once PG4WP_ROOT . '/driver_pgsql_rewrite.php';
 * This file implements the postgreSQL driver
 * This file remaps all wpsqli_* calls to postgres equivalents
 */
-if (!extension_loaded('pgsql')) {
+if (!extension_loaded('pgsql') && !defined('WP_IS_TEST')) {
     wp_die('Your PHP installation appears to be missing the PostgreSQL extension which is required by WordPress with PG4WP.');
 }
 

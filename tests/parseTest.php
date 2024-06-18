@@ -11,6 +11,10 @@ if (!defined('WPINC')) {
     define('WPINC', 'wp-includes');
 }
 
+if (!defined('WP_IS_TEST')) {
+    define('WP_IS_TEST', true);
+}
+
 require_once __DIR__ . "/../pg4wp/db.php";
 
 final class parseTest extends TestCase

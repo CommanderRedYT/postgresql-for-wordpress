@@ -183,6 +183,12 @@ class SelectSQLRewriter extends AbstractSQLRewriter
         $pattern = '/\) AS \'([^\']+)\'/';
         $sql = preg_replace($pattern, ') AS "$1"', $sql);
 
+        // complianz-gdpr has a field `default` with type int where it tests boolean against it (... where default = true)
+        if(str_contains($sql, 'cmplz_cookiebanners as cb') && str_contains($sql, 'cb.default =')) {
+            $sql = str_replace('cb.default = true', 'cb.default = 1', $sql);
+            $sql = str_replace('cb.default = false', 'cb.default = 0', $sql);
+        }
+
         return $sql;
     }
 

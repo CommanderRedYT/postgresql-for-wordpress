@@ -47,7 +47,7 @@ class ShowColumnsSQLRewriter extends AbstractSQLRewriter
                     ELSE '' 
                 END) AS "Key",
                 pg_catalog.pg_get_expr(ad.adbin, ad.adrelid) AS "Default",
-                '' AS "Extra",
+                '' AS "Extra"
             FROM 
                 pg_catalog.pg_attribute a
                 LEFT JOIN pg_catalog.pg_attrdef ad ON (a.attrelid = ad.adrelid AND a.attnum = ad.adnum)

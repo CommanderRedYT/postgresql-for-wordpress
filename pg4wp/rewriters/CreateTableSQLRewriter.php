@@ -22,7 +22,10 @@ class CreateTableSQLRewriter extends AbstractSQLRewriter
         ' DEFAULT CHARSET=utf8' => '',
 
         // For flash-album-gallery plugin
-        ' tinyint'		=> ' smallint'
+        ' tinyint'		=> ' smallint',
+
+        // Two-Factor Webauthn
+        ' CHARSET ascii COLLATE ascii_bin NOT NULL' => ' text NOT NULL'
     ];
 
     public function rewrite(): string

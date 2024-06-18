@@ -26,7 +26,7 @@ class CreateTableSQLRewriter extends AbstractSQLRewriter
         ' mediumint'    => ' integer'
 
         // Two-Factor Webauthn
-        ' CHARSET ascii COLLATE ascii_bin NOT NULL' => ' text NOT NULL'
+        ' CHARSET ascii COLLATE ascii_bin NOT NULL' => ' NOT NULL'
     ];
 
     public function rewrite(): string

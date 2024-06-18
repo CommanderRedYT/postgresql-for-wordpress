@@ -21,8 +21,12 @@ class CreateTableSQLRewriter extends AbstractSQLRewriter
         ' CHARACTER SET utf8' => '',
         ' DEFAULT CHARSET=utf8' => '',
 
+        // For flash-album-gallery plugin
         ' tinyint'		=> ' smallint',
         ' mediumint'    => ' integer'
+
+        // Two-Factor Webauthn
+        ' CHARSET ascii COLLATE ascii_bin NOT NULL' => ' text NOT NULL'
     ];
 
     public function rewrite(): string
@@ -142,15 +146,15 @@ class CreateTableSQLRewriter extends AbstractSQLRewriter
         return $sql;
     }
 
-    private function rewrite_columns_with_protected_names($sql) 
+    private function rewrite_columns_with_protected_names($sql)
     {
         // Splitting the SQL statement into parts before "(", inside "(", and after ")"
         if (preg_match('/^(CREATE TABLE IF NOT EXISTS|CREATE TABLE|ALTER TABLE)\s+([^\s]+)\s*\((.*)\)(.*)$/is', $sql, $matches)) {
             $prefix = $matches[1] . ' ' . $matches[2] . ' (';
             $columnsAndKeys = $matches[3];
             $suffix = ')' . $matches[4];
-    
-            $regex = '/(?:^|\s*,\s*)(\b(?:timestamp|date|time|default|end)\b)\s*(?=\s+\w+)/i'; 
+
+            $regex = '/(?:^|\s*,\s*)(\b(?:timestamp|date|time|default|end)\b)\s*(?=\s+\w+)/i';
 
             // Callback function to add quotes around protected column names
             $callback = function($matches) {

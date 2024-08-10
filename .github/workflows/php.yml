@@ -2,9 +2,9 @@ name: PHP Composer
 
 on:
   push:
-    branches: [ "v2", "v3" ]
+    branches: [ "v2", "v3", "fork" ]
   pull_request:
-    branches: [ "v2", "v3" ]
+    branches: [ "v2", "v3", "fork" ]
   workflow_dispatch:
 
 permissions:

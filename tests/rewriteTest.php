@@ -38,34 +38,34 @@ final class rewriteTest extends TestCase
     {
         $sql = <<<SQL
             CREATE TABLE wp_itsec_lockouts (
-                lockout_id bigint UNSIGNED NOT NULL AUTO_INCREMENT, 
-                lockout_type varchar(25) NOT NULL, 
-                lockout_start timestamp NOT NULL, 
-                lockout_start_gmt timestamp NOT NULL, 
-                lockout_expire timestamp NOT NULL, 
-                lockout_expire_gmt timestamp NOT NULL, 
-                lockout_host varchar(40), 
-                lockout_user bigint UNSIGNED, 
-                lockout_username varchar(60), 
-                lockout_active int(1) NOT NULL DEFAULT 1, 
-                lockout_context TEXT, 
+                lockout_id bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                lockout_type varchar(25) NOT NULL,
+                lockout_start timestamp NOT NULL,
+                lockout_start_gmt timestamp NOT NULL,
+                lockout_expire timestamp NOT NULL,
+                lockout_expire_gmt timestamp NOT NULL,
+                lockout_host varchar(40),
+                lockout_user bigint UNSIGNED,
+                lockout_username varchar(60),
+                lockout_active int(1) NOT NULL DEFAULT 1,
+                lockout_context TEXT,
                 PRIMARY KEY (lockout_id)
             )
         SQL;
 
         $expected = <<<SQL
             CREATE TABLE IF NOT EXISTS wp_itsec_lockouts (
-                lockout_id bigserial, 
-                lockout_type varchar(25) NOT NULL, 
-                lockout_start timestamp NOT NULL, 
-                lockout_start_gmt timestamp NOT NULL, 
-                lockout_expire timestamp NOT NULL, 
-                lockout_expire_gmt timestamp NOT NULL, 
-                lockout_host varchar(40), 
-                lockout_user bigint , 
-                lockout_username varchar(60), 
-                lockout_active int NOT NULL DEFAULT 1, 
-                lockout_context TEXT, 
+                lockout_id bigserial,
+                lockout_type varchar(25) NOT NULL,
+                lockout_start timestamp NOT NULL,
+                lockout_start_gmt timestamp NOT NULL,
+                lockout_expire timestamp NOT NULL,
+                lockout_expire_gmt timestamp NOT NULL,
+                lockout_host varchar(40),
+                lockout_user bigint ,
+                lockout_username varchar(60),
+                lockout_active int NOT NULL DEFAULT 1,
+                lockout_context TEXT,
                 PRIMARY KEY (lockout_id)
             );
         SQL;
@@ -409,28 +409,28 @@ final class rewriteTest extends TestCase
     {
         $GLOBALS['pg4wp_numrows_query'] = <<<SQL
             SELECT wp_posts.ID
-            FROM wp_posts 
-            WHERE 1=1 AND 
-            (((wp_posts.post_title LIKE '%Hello%') OR (wp_posts.post_excerpt LIKE '%Hello%') OR (wp_posts.post_content LIKE '%Hello%')) AND 
-            ((wp_posts.post_title LIKE '%world%') OR (wp_posts.post_excerpt LIKE '%world%') OR (wp_posts.post_content LIKE '%world%'))) AND 
-            ((wp_posts.post_type = 'post' AND (wp_posts.post_status = 'publish' OR wp_posts.post_status = 'future' OR wp_posts.post_status = 'draft' OR wp_posts.post_status = 'pending' OR wp_posts.post_status = 'private'))) 
+            FROM wp_posts
+            WHERE 1=1 AND
+            (((wp_posts.post_title LIKE '%Hello%') OR (wp_posts.post_excerpt LIKE '%Hello%') OR (wp_posts.post_content LIKE '%Hello%')) AND
+            ((wp_posts.post_title LIKE '%world%') OR (wp_posts.post_excerpt LIKE '%world%') OR (wp_posts.post_content LIKE '%world%'))) AND
+            ((wp_posts.post_type = 'post' AND (wp_posts.post_status = 'publish' OR wp_posts.post_status = 'future' OR wp_posts.post_status = 'draft' OR wp_posts.post_status = 'pending' OR wp_posts.post_status = 'private')))
             ORDER BY (CASE
-                WHEN wp_posts.post_title LIKE '%Hello world%' THEN 1 
-                WHEN wp_posts.post_title LIKE '%Hello%' AND wp_posts.post_title LIKE '%world%' THEN 2 
-                WHEN wp_posts.post_title LIKE '%Hello%' OR wp_posts.post_title LIKE '%world%' THEN 3 
-                WHEN wp_posts.post_excerpt LIKE '%Hello world%' THEN 4 
-                WHEN wp_posts.post_content LIKE '%Hello world%' THEN 5 ELSE 6 END), wp_posts.post_date 
-                DESC 
+                WHEN wp_posts.post_title LIKE '%Hello world%' THEN 1
+                WHEN wp_posts.post_title LIKE '%Hello%' AND wp_posts.post_title LIKE '%world%' THEN 2
+                WHEN wp_posts.post_title LIKE '%Hello%' OR wp_posts.post_title LIKE '%world%' THEN 3
+                WHEN wp_posts.post_excerpt LIKE '%Hello world%' THEN 4
+                WHEN wp_posts.post_content LIKE '%Hello world%' THEN 5 ELSE 6 END), wp_posts.post_date
+                DESC
             LIMIT 0, 20
         SQL;
 
         $sql = "SELECT FOUND_ROWS()";
 
         $expected = <<<SQL
-            SELECT COUNT(*) FROM wp_posts 
-            WHERE 1=1 AND 
-            (((wp_posts.post_title ILIKE '%Hello%') OR (wp_posts.post_excerpt ILIKE '%Hello%') OR (wp_posts.post_content ILIKE '%Hello%')) AND 
-            ((wp_posts.post_title ILIKE '%world%') OR (wp_posts.post_excerpt ILIKE '%world%') OR (wp_posts.post_content ILIKE '%world%'))) AND 
+            SELECT COUNT(*) FROM wp_posts
+            WHERE 1=1 AND
+            (((wp_posts.post_title ILIKE '%Hello%') OR (wp_posts.post_excerpt ILIKE '%Hello%') OR (wp_posts.post_content ILIKE '%Hello%')) AND
+            ((wp_posts.post_title ILIKE '%world%') OR (wp_posts.post_excerpt ILIKE '%world%') OR (wp_posts.post_content ILIKE '%world%'))) AND
             ((wp_posts.post_type = 'post' AND (wp_posts.post_status = 'publish' OR wp_posts.post_status = 'future' OR wp_posts.post_status = 'draft' OR wp_posts.post_status = 'pending' OR wp_posts.post_status = 'private')))
         SQL;
 
@@ -442,21 +442,21 @@ final class rewriteTest extends TestCase
     {
         $sql = <<<SQL
             INSERT INTO wp_translations_term_relations (
-                object_id, 
-                object_lang, 
-                source_id) 
-            VALUES (%d, %s, %d) 
-            ON DUPLICATE KEY 
+                object_id,
+                object_lang,
+                source_id)
+            VALUES (%d, %s, %d)
+            ON DUPLICATE KEY
             UPDATE object_id=VALUES(object_id), object_lang=VALUES(object_lang), source_id=VALUES(source_id);
         SQL;
 
         $expected = <<<SQL
             INSERT INTO wp_translations_term_relations (
-                object_id, 
-                object_lang, 
-                source_id) 
-            VALUES (%d, %s, %d) 
-            ON DUPLICATE KEY 
+                object_id,
+                object_lang,
+                source_id)
+            VALUES (%d, %s, %d)
+            ON DUPLICATE KEY
             UPDATE object_id=VALUES(object_id), object_lang=VALUES(object_lang), source_id=VALUES(source_id) RETURNING *;
         SQL;
 
@@ -476,18 +476,18 @@ final class rewriteTest extends TestCase
     public function test_it_doesnt_rewrite_when_it_doesnt_need_to()
     {
         $sql = <<<SQL
-            SELECT p.ID FROM wp_posts p 
-            WHERE post_type='scheduled-action' 
-            AND p.post_status IN ('pending') 
-            AND p.post_modified_gmt <= '2023-11-27 14:23:34' 
+            SELECT p.ID FROM wp_posts p
+            WHERE post_type='scheduled-action'
+            AND p.post_status IN ('pending')
+            AND p.post_modified_gmt <= '2023-11-27 14:23:34'
             AND p.post_password != '' ORDER BY p.post_date_gmt ASC LIMIT 0, 20
         SQL;
 
         $expected = <<<SQL
-            SELECT p."ID" , p.post_date_gmt FROM wp_posts p 
-            WHERE post_type='scheduled-action' 
-            AND p.post_status IN ('pending') 
-            AND p.post_modified_gmt <= '2023-11-27 14:23:34' 
+            SELECT p."ID" , p.post_date_gmt FROM wp_posts p
+            WHERE post_type='scheduled-action'
+            AND p.post_status IN ('pending')
+            AND p.post_modified_gmt <= '2023-11-27 14:23:34'
             AND p.post_password != '' ORDER BY p.post_date_gmt ASC LIMIT 20 OFFSET 0
         SQL;
 
@@ -495,7 +495,7 @@ final class rewriteTest extends TestCase
         $this->assertSame(trim($expected), trim($postgresql));
     }
 
-    public function test_it_handles_alter_tables_with_indexes() 
+    public function test_it_handles_alter_tables_with_indexes()
     {
         $sql = <<<SQL
             ALTER TABLE wp_e_events ADD INDEX `created_at_index` (`created_at`)
@@ -510,7 +510,7 @@ final class rewriteTest extends TestCase
 
     }
 
-    public function test_it_handles_alter_tables_with_unique_indexes() 
+    public function test_it_handles_alter_tables_with_unique_indexes()
     {
         $sql = <<<SQL
             ALTER TABLE wp_e_events ADD UNIQUE INDEX `created_at_index` (`created_at`)
@@ -605,7 +605,7 @@ final class rewriteTest extends TestCase
                 `disable_width_correction` int(11) NOT NULL,
                 `legal_documents` int(11) NOT NULL,
                 PRIMARY KEY  (ID)
-            ) 
+            )
             DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
         SQL;
 
@@ -666,7 +666,7 @@ final class rewriteTest extends TestCase
                 disable_width_correction int NOT NULL,
                 legal_documents int NOT NULL,
                 PRIMARY KEY  ( "ID" )
-            ) 
+            )
            ;
         SQL;
 
@@ -733,7 +733,7 @@ final class rewriteTest extends TestCase
                 disable_width_correction int(11) NOT NULL,
                 legal_documents int(11) NOT NULL,
                 PRIMARY KEY  (ID)
-            ) 
+            )
             DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
         SQL;
 
@@ -794,7 +794,7 @@ final class rewriteTest extends TestCase
                 disable_width_correction int NOT NULL,
                 legal_documents int NOT NULL,
                 PRIMARY KEY  ( "ID" )
-            ) 
+            )
            ;
         SQL;
 
@@ -841,9 +841,9 @@ final class rewriteTest extends TestCase
         $postgresql = pg4wp_rewrite($sql);
         $this->assertSame(trim($expected), trim($postgresql));
     }
-    
 
-    public function test_it_doesnt_remove_single_quotes() 
+
+    public function test_it_doesnt_remove_single_quotes()
     {
         $sql = <<<SQL
             SELECT COUNT(*) FROM wp_comments WHERE user_id = 5 AND comment_approved = '1'
@@ -903,14 +903,14 @@ final class rewriteTest extends TestCase
             <!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
             <figure class="wp-block-image size-large"><img src="https://s.w.org/images/core/5.8/nature-above-02.jpg" alt="An aerial view of a field. A road runs through the upper right corner." /></figure>
             <!-- /wp:image --></figure>
-            <!-- /wp:gallery -->";}}', 'no') ON CONFLICT ("option_name") DO UPDATE SET "option_value" = EXCLUDED."option_value", "autoload" = EXCLUDED."autoload" RETURNING * 
+            <!-- /wp:gallery -->";}}', 'no') ON CONFLICT ("option_name") DO UPDATE SET "option_value" = EXCLUDED."option_value", "autoload" = EXCLUDED."autoload" RETURNING *
         SQL;
 
         $postgresql = pg4wp_rewrite($sql);
         $this->assertSame(trim($expected), trim($postgresql));
     }
 
-    public function test_it_rewrites_mediumints() 
+    public function test_it_rewrites_mediumints()
     {
         $sql = <<<SQL
             CREATE TABLE wp_relevanssi (
@@ -966,14 +966,14 @@ final class rewriteTest extends TestCase
         $this->assertSame(trim($expected), trim($postgresql));
     }
 
-    public function test_it_rewrites_0CASTS() 
+    public function test_it_rewrites_0CASTS()
     {
 
         $sql = <<<SQL
             SELECT   wp_posts.* FROM wp_posts  INNER JOIN wp_postmeta ON ( wp_posts.ID = wp_postmeta.post_id )
-            WHERE 1=1  AND ( 
+            WHERE 1=1  AND (
                 wp_posts.post_date > '2024-07-17 23:59:59'
-            ) AND ( 
+            ) AND (
                 wp_postmeta.meta_key = 'make_feature_post'
             ) AND (
                 (wp_posts.post_type = 'announcement' AND (wp_posts.post_status = 'publish' OR wp_posts.post_status = 'acf-disabled' OR wp_posts.post_status = 'private'))
@@ -984,14 +984,14 @@ final class rewriteTest extends TestCase
 
         $expected = <<<SQL
             SELECT   wp_posts.* FROM wp_posts  INNER JOIN wp_postmeta ON ( wp_posts."ID" = wp_postmeta.post_id )
-            WHERE 1=1  AND ( 
+            WHERE 1=1  AND (
                 wp_posts.post_date > '2024-07-17 23:59:59'
-            ) AND ( 
+            ) AND (
                 wp_postmeta.meta_key = 'make_feature_post'
             ) AND (
                 (wp_posts.post_type = 'announcement' AND (wp_posts.post_status = 'publish' OR wp_posts.post_status = 'acf-disabled' OR wp_posts.post_status = 'private'))
             )
-            
+
             ORDER BY CAST(wp_postmeta.meta_value AS INTEGER) DESC, wp_posts.post_date DESC
         SQL;
 
@@ -999,7 +999,7 @@ final class rewriteTest extends TestCase
         $this->assertSame(trim($expected), trim($postgresql));
     }
 
-    public function test_it_rewrites_regexp() 
+    public function test_it_rewrites_regexp()
     {
         $sql = <<<SQL
             SELECT DISTINCT meta_key FROM wp_gf_entry_meta WHERE form_id=2 AND meta_key REGEXP '^[0-9]+(\.[0-9]+)?$'
@@ -1013,7 +1013,7 @@ final class rewriteTest extends TestCase
         $this->assertSame(trim($expected), trim($postgresql));
     }
 
-    public function test_it_rewrites_utc_timestamp_inserts() 
+    public function test_it_rewrites_utc_timestamp_inserts()
     {
         $sql = <<<SQL
             INSERT INTO wp_gf_form(title, date_created) VALUES('Test', utc_timestamp())
@@ -1027,7 +1027,7 @@ final class rewriteTest extends TestCase
         $this->assertSame(trim($expected), trim($postgresql));
     }
 
-    public function test_it_rewrites_utc_timestamp_selects() 
+    public function test_it_rewrites_utc_timestamp_selects()
     {
         $sql = <<<SQL
             SELECT utc_timestamp()
@@ -1041,7 +1041,7 @@ final class rewriteTest extends TestCase
         $this->assertSame(trim($expected), trim($postgresql));
     }
 
-    public function test_it_quotes_reserved_columns() 
+    public function test_it_quotes_reserved_columns()
     {
         $sql = <<<SQL
             CREATE TABLE wp_aioseo_notifications (
@@ -1100,7 +1100,42 @@ final class rewriteTest extends TestCase
         $postgresql = pg4wp_rewrite($sql);
         $this->assertSame(trim($expected), trim($postgresql));
     }
-   
+
+
+    public function test_it_removes_comments_in_create()
+    {
+        $sql = <<<SQL
+            CREATE TABLE IF NOT EXISTS wp_litespeed_url_file (
+                id bigserial,
+                url_id bigint NOT NULL,
+                vary varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'md5 of final vary',
+                filename varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'md5 of file content',
+                type smallint NOT NULL COMMENT 'css=1,js=2,ccss=3,ucss=4',
+                mobile smallint NOT NULL COMMENT 'mobile=1',
+                webp smallint NOT NULL COMMENT 'webp=1',
+                expired int NOT NULL DEFAULT 0,
+                PRIMARY KEY (id)
+            );
+        SQL;
+
+        $expected = <<<SQL
+            CREATE TABLE IF NOT EXISTS wp_litespeed_url_file (
+                id bigserial,
+                url_id bigint NOT NULL,
+                vary varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+                filename varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+                type smallint NOT NULL,
+                mobile smallint NOT NULL,
+                webp smallint NOT NULL,
+                expired int NOT NULL DEFAULT 0,
+                PRIMARY KEY (id)
+            );
+        SQL;
+
+        $postgresql = pg4wp_rewrite($sql);
+        $this->assertSame(trim($expected), trim($postgresql));
+    }
+
 
     protected function setUp(): void
     {

@@ -58,6 +58,7 @@ class CreateTableSQLRewriter extends AbstractSQLRewriter
             $sql
         );
 
+        $sql = $this->rewrite_sql_comment($sql);
         $sql = $this->rewrite_numeric_type($sql);
         $sql = $this->rewrite_columns_with_protected_names($sql);
 
@@ -167,6 +168,16 @@ class CreateTableSQLRewriter extends AbstractSQLRewriter
             $columnsAndKeys = preg_replace_callback($regex, $callback, $columnsAndKeys);
             return $prefix . $columnsAndKeys . $suffix;
         }
+
+        return $sql;
+    }
+
+    private function rewrite_sql_comment($sql)
+    {
+        // comments are not supported in pgsql
+        $pattern = '/COMMENT \'[^\']*\'/';
+        $replacement = '';
+        $sql = preg_replace($pattern, $replacement, $sql);
 
         return $sql;
     }

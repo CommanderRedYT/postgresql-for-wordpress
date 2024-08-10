@@ -169,7 +169,7 @@ class CreateTableSQLRewriter extends AbstractSQLRewriter
     private function rewrite_sql_comment($sql)
     {
         // comments are not supported in pgsql
-        $pattern = '/COMMENT \'[^\']*\'/';
+        $pattern = '/ ?COMMENT \'[^\']*\'/';
         $replacement = '';
         $sql = preg_replace($pattern, $replacement, $sql);
 

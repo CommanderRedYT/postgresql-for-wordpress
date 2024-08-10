@@ -887,7 +887,39 @@ final class rewriteTest extends TestCase
         $this->assertSame(trim($expected), trim($postgresql));
     }
 
+    public function test_it_removes_comments_in_create()
+    {
+        $sql = <<<SQL
+            CREATE TABLE IF NOT EXISTS wp_litespeed_url_file (
+                id bigserial,
+                url_id bigint NOT NULL,
+                vary varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'md5 of final vary',
+                filename varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'md5 of file content',
+                type smallint NOT NULL COMMENT 'css=1,js=2,ccss=3,ucss=4',
+                mobile smallint NOT NULL COMMENT 'mobile=1',
+                webp smallint NOT NULL COMMENT 'webp=1',
+                expired int NOT NULL DEFAULT 0,
+                PRIMARY KEY (id)
+            );
+        SQL;
 
+        $expected = <<<SQL
+            CREATE TABLE IF NOT EXISTS wp_litespeed_url_file (
+                id bigserial,
+                url_id bigint NOT NULL,
+                vary varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+                filename varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+                type smallint NOT NULL,
+                mobile smallint NOT NULL,
+                webp smallint NOT NULL,
+                expired int NOT NULL DEFAULT 0,
+                PRIMARY KEY (id)
+            );
+        SQL;
+
+        $postgresql = pg4wp_rewrite($sql);
+        $this->assertSame(trim($expected), trim($postgresql));
+    }
     
 
     protected function setUp(): void

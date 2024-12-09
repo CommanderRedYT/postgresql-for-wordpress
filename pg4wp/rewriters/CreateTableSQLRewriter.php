@@ -23,7 +23,7 @@ class CreateTableSQLRewriter extends AbstractSQLRewriter
 
         // For flash-album-gallery plugin
         ' tinyint'		=> ' smallint',
-        ' mediumint'    => ' integer'
+        ' mediumint'    => ' integer',
 
         // Two-Factor Webauthn
         ' CHARSET ascii COLLATE ascii_bin NOT NULL' => ' NOT NULL'

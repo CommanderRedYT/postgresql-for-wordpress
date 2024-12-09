@@ -991,7 +991,7 @@ final class rewriteTest extends TestCase
             ) AND (
                 (wp_posts.post_type = 'announcement' AND (wp_posts.post_status = 'publish' OR wp_posts.post_status = 'acf-disabled' OR wp_posts.post_status = 'private'))
             )
-
+            
             ORDER BY CAST(wp_postmeta.meta_value AS INTEGER) DESC, wp_posts.post_date DESC
         SQL;
 
